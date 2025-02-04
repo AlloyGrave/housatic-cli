@@ -1,7 +1,18 @@
 #!/bin/bash
+
+# Step 1: Start the HTTP server (this keeps the web server running in the background)
 nohup python3 -m http.server 8000 > /dev/null 2>&1 &
-npm install    # Install dependencies
-node .         # Run the bot
+
+# Step 2: Install dependencies (if you haven't already done it)
+npm install
+
+# Step 3: Start the bot in the background and handle menu navigation
+nohup node . > output.log 2>&1 &
+
+node .
+
+# Step 4: Use Node.js to automatically navigate the menu and press 'Enter' for each option
+node -e "
 const readline = require('readline');
 
 // Assuming you're using a readline interface in the bot's menu
@@ -10,22 +21,28 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-// Function to simulate menu selection
+// Function to simulate pressing 'Enter' key for menu navigation
+function pressEnter() {
+  rl.write('\n');  // Sends an 'Enter' key press
+}
+
+// Function to automatically navigate the menu and select options
 function navigateMenu() {
-  // Select "Control a bot" (assuming it's option 1)
-  rl.write('1\n');  // Sends input '1' to choose the "Control a bot" option
+  // Step 1: Select 'Control a bot' by pressing 'Enter'
+  pressEnter();  // Press 'Enter' to select 'Control a bot'
 
-  // After selecting "Control a bot", wait for the next prompt (which should be for bot selection)
+  // After selecting 'Control a bot', wait for the next prompt (which should be for bot selection)
   rl.once('line', (input) => {
-    // Assuming the bot name is "BlackArrow9O"
-    rl.write('BlackArrow9O\n');  // Sends the bot name to select it
+    // Select the bot 'BlackArrow9O' (you may need to customize this based on actual bot name)
+    rl.write('BlackArrow9O\n');  // Sends bot name selection
 
-    // After selecting the bot, wait for the "start" option to appear
+    // After selecting the bot, wait for the 'start' option to appear
     rl.once('line', (input) => {
-      rl.write('start\n');  // Sends 'start' to initiate the bot
+      // Press 'Enter' to start the bot
+      pressEnter();
       console.log('Bot started!');
-      
-      // Once the bot starts, close the readline interface to finish the process
+
+      // Close the readline interface after bot has been started
       rl.close();
     });
   });
@@ -46,3 +63,4 @@ function startBot() {
 
 // Start the bot with the automated menu selection
 startBot();
+"

@@ -10,19 +10,28 @@ npm install
 nohup node . > housatic.log 2>&1 &  
 
 # Step 4: Wait for Housatic to start
-sleep 3  
+sleep 5  
 
 # Step 5: Automate bot creation
-echo -e "2\nBlackArrow\nBlazeKnight\n3\n" | node .  
+echo -e "2\n" | node .  # Select "Create a bot"
+sleep 2  
+echo -e "BlackArrow\n" | node .  # Type bot name
+sleep 2  
+echo -e "BlazeKnight\n" | node .  # Type house owner
+sleep 2  
+echo -e "3\n" | node .  # Type house slot
+sleep 2  
 
 # Step 6: Select "Control a bot"
-sleep 1  
-echo -e "1\nBlackArrow\n" | node .  
+echo -e "1\n" | node .  
+sleep 2  
 
-# Step 7: Start the bot
-sleep 1  
+# Step 7: Select "BlackArrow" from the list
+echo -e "1\n" | node .  # Assuming it's the first bot in the list
+sleep 2  
+
+# Step 8: Start the bot
 echo -e "start\n" | node .  
 
 # Keep script running to prevent shutdown
 tail -f /dev/null
-

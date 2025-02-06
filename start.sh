@@ -12,25 +12,31 @@ nohup node . > housatic.log 2>&1 &
 # Step 4: Wait for Housatic to start
 sleep 5  
 
-# Step 5: Automate bot creation
-echo -e "2\n" | node .  # Select "Create a bot"
-sleep 2  
-echo -e "BlackArrow\n" | node .  # Type bot name
-sleep 2  
-echo -e "BlazeKnight\n" | node .  # Type house owner
-sleep 2  
-echo -e "3\n" | node .  # Type house slot
+# Step 5: Select "Create a bot"
+printf "\033[B\033[B\n" | node .  # Press "Down" twice, then Enter
 sleep 2  
 
-# Step 6: Select "Control a bot"
-echo -e "1\n" | node .  
+# Step 6: Type "BlackArrow" for bot name
+echo -e "BlackArrow\n" | node .  
 sleep 2  
 
-# Step 7: Select "BlackArrow" from the list
+# Step 7: Type "BlazeKnight" for house owner
+echo -e "BlazeKnight\n" | node .  
+sleep 2  
+
+# Step 8: Type "3" for house slot
+echo -e "3\n" | node .  
+sleep 2  
+
+# Step 9: Select "Control a bot"
+printf "\033[A\n" | node .  # Press "Up" once, then Enter
+sleep 2  
+
+# Step 10: Select "BlackArrow" from the list
 echo -e "1\n" | node .  # Assuming it's the first bot in the list
 sleep 2  
 
-# Step 8: Start the bot
+# Step 11: Start the bot
 echo -e "start\n" | node .  
 
 # Keep script running to prevent shutdown

@@ -1,43 +1,44 @@
-#!/bin/bash
+#!/usr/bin/expect
+
+set timeout -1
 
 # Step 1: Start the HTTP server (keeps the process alive)
-nohup python3 -m http.server 8000 > /dev/null 2>&1 &
+spawn python3 -m http.server 8000
 
 # Step 2: Install dependencies
-npm install
+spawn npm install
+expect eof
 
-# Step 3: Start Housatic in the background
-nohup node . > housatic.log 2>&1 &  
+# Step 3: Start Housatic
+spawn node .
+expect "◆  Main Menu"
 
-# Step 4: Wait for Housatic to start
-sleep 5  
+# Step 4: Select "Create a bot"
+send "\033[B"
+send "\n"
+expect "Enter bot name"
 
-# Step 5: Select "Create a bot"
-printf "\033[B\033[B\n" | node .  # Press "Down" twice, then Enter
-sleep 2  
+# Step 5: Enter bot name
+send "BlackArrow\n"
+expect "Enter house owner's name"
 
-# Step 6: Type "BlackArrow" for bot name
-echo -e "BlackArrow\n" | node .  
-sleep 2  
+# Step 6: Enter house owner
+send "BlazeKnight\n"
+expect "Enter house slot"
 
-# Step 7: Type "BlazeKnight" for house owner
-echo -e "BlazeKnight\n" | node .  
-sleep 2  
+# Step 7: Enter house slot
+send "3\n"
+expect "◆  Main Menu"
 
-# Step 8: Type "3" for house slot
-echo -e "3\n" | node .  
-sleep 2  
+# Step 8: Select "Control a bot"
+send "\033[A"
+send "\n"
+expect "Select bot"
 
-# Step 9: Select "Control a bot"
-printf "\033[A\n" | node .  # Press "Up" once, then Enter
-sleep 2  
+# Step 9: Choose "BlackArrow" (assuming it's the first bot)
+send "1\n"
+expect "Bot commands"
 
-# Step 10: Select "BlackArrow" from the list
-echo -e "1\n" | node .  # Assuming it's the first bot in the list
-sleep 2  
-
-# Step 11: Start the bot
-echo -e "start\n" | node .  
-
-# Keep script running to prevent shutdown
-tail -f /dev/null
+# Step 10: Start the bot
+send "start\n"
+expect eof
